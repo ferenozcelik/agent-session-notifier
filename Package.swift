@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "SessionNotifier",
+    name: "AgentSessionNotifier",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "SessionNotifier",
-            path: "Sources/SessionNotifier"
+            name: "AgentSessionNotifier",
+            path: "Sources/AgentSessionNotifier"
         )
     ]
 )
