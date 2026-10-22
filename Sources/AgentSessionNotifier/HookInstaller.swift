@@ -16,7 +16,7 @@ final class HookInstaller {
 
     /// The command in settings.json. Quoted because the path contains a space.
     private var command: String { "\"\(AppPaths.hookScript.path)\"" }
-    private let marker = "SessionNotifier/hook.sh"
+    private let marker = "AgentSessionNotifier/hook.sh"
 
     init() {
         writeScript()
@@ -75,7 +75,7 @@ final class HookInstaller {
             }
             settings = existing
             // Back up before every change.
-            let backup = settingsURL.appendingPathExtension("sessionnotifier-backup")
+            let backup = settingsURL.appendingPathExtension("agentsessionnotifier-backup")
             try? fm.removeItem(at: backup)
             try? fm.copyItem(at: settingsURL, to: backup)
         } else {
@@ -102,9 +102,9 @@ final class HookInstaller {
     private func writeScript() {
         let script = #"""
         #!/bin/sh
-        # SessionNotifier hook: drops the Claude Code event into the folder the app reads.
+        # AgentSessionNotifier hook: drops the Claude Code event into the folder the app reads.
         # Events are kept even if the app is closed. Always exits 0 so it never blocks Claude.
-        dir="$HOME/Library/Application Support/SessionNotifier/events"
+        dir="$HOME/Library/Application Support/AgentSessionNotifier/events"
         mkdir -p "$dir" 2>/dev/null || exit 0
         tmp=$(mktemp "$dir/.evt.XXXXXXXX" 2>/dev/null) || exit 0
         app=$(printf '%s' "${__CFBundleIdentifier:-}" | tr -cd 'A-Za-z0-9._-')

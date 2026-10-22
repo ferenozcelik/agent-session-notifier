@@ -1,12 +1,12 @@
 #!/bin/bash
-# Builds SessionNotifier.app. Usage:
-#   ./build.sh            -> build/SessionNotifier.app
-#   ./build.sh --install  -> installs to /Applications/SessionNotifier.app and launches it
+# Builds AgentSessionNotifier.app. Usage:
+#   ./build.sh            -> build/AgentSessionNotifier.app
+#   ./build.sh --install  -> installs to /Applications/AgentSessionNotifier.app and launches it
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP_NAME="SessionNotifier"
-BUNDLE_ID="com.erenoz.sessionnotifier"
+APP_NAME="AgentSessionNotifier"
+BUNDLE_ID="com.erenoz.agentsessionnotifier"
 APP="build/$APP_NAME.app"
 
 swift build -c release
@@ -60,7 +60,7 @@ if [[ "${1:-}" == "--install" ]]; then
     pkill -x "$APP_NAME" 2>/dev/null || true
     rm -rf "/Applications/$APP_NAME.app"
     cp -R "$APP" /Applications/
-    # If the build/ copy stays registered with the same bundle id, a second SessionNotifier shows up
+    # If the build/ copy stays registered with the same bundle id, a second AgentSessionNotifier shows up
     # in Spotlight and login items, and notifications may pick up the wrong copy's icon.
     LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
     "$LSREGISTER" -u "$PWD/$APP" >/dev/null 2>&1 || true

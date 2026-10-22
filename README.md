@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="AppIcons/AppIcon.appiconset/icon_128x128@2x.png" width="128" alt="SessionNotifier icon">
+  <img src="AppIcons/AppIcon.appiconset/icon_128x128@2x.png" width="128" alt="AgentSessionNotifier icon">
 </p>
 
-<h1 align="center">SessionNotifier</h1>
+<h1 align="center">AgentSessionNotifier</h1>
 
 <p align="center">
   Keep track of your Claude Code sessions from the macOS menu bar.<br>
@@ -30,8 +30,8 @@
 ## Installation
 
 ```bash
-git clone https://github.com/ferenozcelik/session-notifier.git
-cd session-notifier
+git clone https://github.com/ferenozcelik/agent-session-notifier.git
+cd agent-session-notifier
 ./build.sh --install
 ```
 
@@ -47,12 +47,12 @@ Hooks take effect in Claude Code sessions started **after** installation.
 ## How it works
 
 ```
-Claude Code hook  →  hook.sh  →  ~/Library/Application Support/SessionNotifier/events/*.json  →  app
+Claude Code hook  →  hook.sh  →  ~/Library/Application Support/AgentSessionNotifier/events/*.json  →  app
 ```
 
 **Install Hooks** adds global hooks to `~/.claude/settings.json` for `SessionStart`, `UserPromptSubmit`,
 `PostToolUse`, `Notification`, `Stop` and `SessionEnd`. Your other hooks are left untouched, and the file is
-backed up as `settings.json.sessionnotifier-backup` before every change.
+backed up as `settings.json.agentsessionnotifier-backup` before every change.
 
 The hook script drops each event into a folder as a JSON file and exits immediately, so it never slows Claude down.
 The app watches the folder, processes events in order and deletes them. Sessions with no activity for 24 hours
@@ -61,15 +61,15 @@ drop off the list.
 ## Uninstall
 
 1. Click the menu bar icon → ⚙︎ → **Uninstall Hooks**.
-2. Quit the app and delete `/Applications/SessionNotifier.app`.
-3. Optionally remove `~/Library/Application Support/SessionNotifier`.
+2. Quit the app and delete `/Applications/AgentSessionNotifier.app`.
+3. Optionally remove `~/Library/Application Support/AgentSessionNotifier`.
 
 ## Privacy
 
-SessionNotifier has no network access. Session data stays on your Mac.
+AgentSessionNotifier has no network access. Session data stays on your Mac.
 
 ## License
 
 Released under the [MIT License](LICENSE).
 
-SessionNotifier is an independent project and is not affiliated with or endorsed by Anthropic.
+AgentSessionNotifier is an independent project and is not affiliated with or endorsed by Anthropic.
