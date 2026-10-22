@@ -3,7 +3,7 @@ import ServiceManagement
 import SwiftUI
 
 @main
-struct SessionNotifierApp: App {
+struct AgentSessionNotifierApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
 
     var body: some Scene {

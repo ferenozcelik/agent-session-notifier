@@ -104,7 +104,7 @@ struct HookEvent {
 enum AppPaths {
     static let support: URL = {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("SessionNotifier", isDirectory: true)
+        let dir = base.appendingPathComponent("AgentSessionNotifier", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }()
