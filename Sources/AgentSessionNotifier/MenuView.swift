@@ -7,6 +7,7 @@ struct MenuView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var listHeight: CGFloat = 0
+    @State private var contentHeight: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -47,6 +48,13 @@ struct MenuView: View {
             footer
         }
         .frame(width: 360)
+        .background(GeometryReader { proxy in
+            Color.clear
+                .onAppear { contentHeight = proxy.size.height }
+                .onChange(of: proxy.size.height) { _, height in contentHeight = height }
+        })
+        .background(WindowFitter(contentHeight: contentHeight))
+        .frame(maxHeight: .infinity, alignment: .top)
         .onAppear { hooks.refresh() }
     }
 
@@ -127,6 +135,39 @@ struct MenuView: View {
         }
         Divider()
         Button("Remove from List") { store.remove(session.id) }
+    }
+}
+
+/// A MenuBarExtra window grows with its content but doesn't shrink (e.g. after the hooks banner
+/// goes away), which leaves the content centered in empty space. Fit the window to the content,
+/// keeping its top edge under the menu bar.
+/// Resizes only when the measured content height changes: resizing on every update fights the
+/// window's own sizing and loops forever at 100% CPU.
+private struct WindowFitter: NSViewRepresentable {
+    let contentHeight: CGFloat
+
+    final class Coordinator {
+        var appliedHeight: CGFloat = 0
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
+    func makeNSView(context: Context) -> NSView { NSView() }
+
+    func updateNSView(_ view: NSView, context: Context) {
+        let height = contentHeight
+        let coordinator = context.coordinator
+        guard height > 0, height != coordinator.appliedHeight else { return }
+        DispatchQueue.main.async {
+            guard let window = view.window, height != coordinator.appliedHeight else { return }
+            coordinator.appliedHeight = height
+            let current = window.contentRect(forFrameRect: window.frame)
+            guard abs(current.height - height) > 0.5 else { return }
+            var frame = window.frameRect(forContentRect: NSRect(x: current.minX, y: current.minY,
+                                                                 width: current.width, height: height))
+            frame.origin.y = window.frame.maxY - frame.height
+            window.setFrame(frame, display: true)
+        }
     }
 }
 
